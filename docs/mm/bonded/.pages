@@ -1,0 +1,5 @@
+nav:
+  - Covalent: index.md
+  - Bonds: bonds
+  - Angles: angles
+  - Dihedrals: dihedrals

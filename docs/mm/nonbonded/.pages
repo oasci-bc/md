@@ -1,0 +1,4 @@
+nav:
+  - Nonbonded: index.md
+  - Electrostatic: electrostatic
+  - van der Waals: vdw
