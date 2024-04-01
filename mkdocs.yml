@@ -85,7 +85,7 @@ extra:
   generator: false
   analytics:
     provider: plausible
-    domain: python.oasci.org
+    domain: md.crumblearn.org
   social:
     - icon: fontawesome/brands/gitlab
       link: https://gitlab.com/oasci
