@@ -7,7 +7,31 @@ At its core, statistical mechanics is based on the idea that the properties of a
 
 ## Microscopic states
 
-In statistical mechanics, a microscopic state refers to a specific configuration of a system in terms of the positions and momenta of its constituent particles. For example, in a gas, a microscopic state would be defined by the precise positions and velocities of all the individual molecules at a given instant.
+In statistical mechanics, a microscopic state refers to a specific, distinguishable configuration of a system.
+For our cases, we are concerned primarily with atomistic systems dictated by enormous amount of quantum states.
+In order to calculate a thermodynamic property such as energy, pressure, or volume we need to account for all possible quantum states.
+The collection of all possible system states that replicates macroscopic properties is called an **ensemble**, $\mathcal{A}$.
+In other words, the total number of ways you could atomistically arrange particles without changing the number of particles ($N$), volume ($V$), and energy ($E$).
+
+This can be a little confusing, so instead let's consider coin flips.
+Envision a system that contains exactly three coins that can either be heads or tails.
+A **macrostate** is a macroscopic description of our system; for example, one macrostate could be having all three coins show heads.
+A **microstate** is a single possible configuration we could arrange our system's components without changing the macrostate.
+In our case, we only have one way we could arrange our three coins for either all heads or all tails&mdash;one one microstate is valid.
+
+What if we defined our macrostate to have two heads and one tails?
+Well, there would be three possible ways to arrange our coins to achieve this macrostate (see Figure 1).
+
+!!! quote "**Figure 1**"
+
+    <figure markdown>
+    ![](../../img/statmech/micro-to-macro.svg){ alight=left width=500 }
+    </figure>
+
+    All possible macrostates (in boxes) and constituent microstates (i.e., coin arrangements) of three coins.
+    This assumes the coins are indistinguishable meaning we cannot tell two coins that show heads apart besides their position.
+
+For example, in a gas, a microscopic state would be defined by the precise positions and velocities of all the individual molecules at a given instant.
 
 It's important to note that a system can have an enormous number of possible microscopic states. To illustrate this, consider a simple system of just 10 particles, each of which can be in one of two possible states (e.g., spin up or spin down). The total number of microscopic configurations for this system would be 2^10 = 1,024. As the number of particles increases, the number of possible microscopic states grows exponentially. For instance, a system of 100 particles with two possible states each would have 2^100 ≈ 10^30 microscopic configurations.
 
