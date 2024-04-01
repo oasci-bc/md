@@ -1,2 +1,4 @@
 nav:
   - Coordinates: index.md
+  - Cartesian: cartesian
+  - Internal: internal

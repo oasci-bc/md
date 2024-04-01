@@ -14,3 +14,4 @@ The following resources are recommended for further reading.
 -   Anslyn, E. V., & Dougherty, D. A. (2006). *Modern physical organic chemistry*. University Science Books.
 -   Frenkel, D. & Smit, B. (2002). *Understanding molecular simulation: From algorithms to applications*. Academic Press.
 -   Leach, A. R. (2001). *Molecular modelling: Principles and applications*. Pearson Education.
+-   McQuarrie, D. A. (1976) *Statistical mechanics*. Harper & Row.

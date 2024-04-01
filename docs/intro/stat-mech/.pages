@@ -1,2 +1,5 @@
 nav:
   - Statistical mechanics: index.md
+  - Expectation values: expectation
+  - Simulation techniques: sim-techniques
+  - Measurable properties: measurable
