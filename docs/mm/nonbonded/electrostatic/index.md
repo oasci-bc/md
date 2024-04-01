@@ -15,3 +15,9 @@ These force fields provide a more accurate description of electrostatic interact
 
 The accuracy of electrostatic interactions in molecular simulations depends on several factors, including the quality of the partial charges, the treatment of polarization effects, and the choice of dielectric constant.
 In practice, the dielectric constant is often used as a scaling factor to implicitly account for the screening of electrostatic interactions by the surrounding environment, such as solvent molecules.
+
+<!-- REFERENCES -->
+
+[^jensen2017introduction]: Chapter 2 of Jensen, F. (2017). *Introduction to computational chemistry*. John Wiley & Sons.
+[^cramer2013essentials]: Chapter 2 of Cramer, C. J. (2013). Chapter 2 of *Essentials of computational chemistry: Theories and models*. John Wiley & Sons.
+[^leach2001molecular]: Chapter 4 of Leach, A. R. (2001). *Molecular modelling: Principles and applications*. Pearson Education.
