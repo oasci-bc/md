@@ -1,4 +1,8 @@
 nav:
     - Home: index.md
-    - 0.0 Introduction: intro
+    - Introduction: intro
+    - Molecular mechanics: mm
+    - Simulations: sims
+    - Rare-event sampling: rare
+    - Free energies: free
     - Appendices: appendices

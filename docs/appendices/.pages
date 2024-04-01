@@ -1,2 +1,4 @@
 nav:
-    - Appendices: index.md
+  - Appendices: index.md
+  - References: references
+  - Quantum chemistry data: qc-data

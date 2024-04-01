@@ -1,0 +1,7 @@
+nav:
+  - Simulations: index.md
+  - Ensembles: ensembles
+  - System: system
+  - Relaxation: relax
+  - Step: step
+  - Production: prod

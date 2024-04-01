@@ -1,0 +1,6 @@
+nav:
+  - Quantum chemistry data: index.md
+  - Geometry optimization: opt
+  - Bond scans: bonds
+  - Angle scans: angles
+  - Dihedral scans: dihedrals
