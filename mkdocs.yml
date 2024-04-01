@@ -3,9 +3,9 @@ docs_dir: docs
 site_name: Molecular Dynamics - Breadcrumbs
 site_author: OASCI
 
-repo_name: oasci/breadcrumbs/dm
-repo_url: https://gitlab.com/oasci/breadcrumbs/dm
-edit_uri: -/edit/main/dm
+repo_name: oasci/breadcrumbs/md
+repo_url: https://gitlab.com/oasci/breadcrumbs/md
+edit_uri: -/edit/main/md
 copyright: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> by OASCI
 
 # https://squidfunk.github.io/mkdocs-material/
@@ -79,7 +79,7 @@ plugins:
 
 hooks:
   - hooks/launchy.py
-colab_base_url: https://colab.research.google.com/github/oasci/python-bc/blob/main/docs
+colab_base_url: https://colab.research.google.com/github/oasci/md-bc/blob/main/docs
 
 extra:
   generator: false
