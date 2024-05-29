@@ -1,5 +1,6 @@
 nav:
   - Protein force fields: index.md
+  - Cornell: cornell
   - Stony-Brook: sb
   - Implicitly Polarized Q: ipq
   - Force balance: fb
