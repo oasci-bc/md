@@ -143,50 +143,43 @@ let dielectricSketch = (p) => {
   class SolventMolecule {
     constructor(x, y) {
       this.position = p.createVector(x, y);
-      this.restAngle = 0;
-      this.currentAngle = this.restAngle;
+      this.currentAngle = 0;
       this.size = 20;
-      this.restoringForce = 0.1; // Small constant restoring force
-      this.updateGradient();
+      this.restoringForce = 5.0; // Small constant restoring force
+      this.updateGradient(0);
     }
 
     update(positiveIon, negativeIon, polarizability) {
-      let force = this.calculateForce(positiveIon, negativeIon, polarizability);
-      console.log(this.currentAngle);
-      console.log(force);
-      console.log("---");
-      this.currentAngle = p.lerp(
-        this.currentAngle, this.currentAngle + force + this.restoringForce, 0.1
-      );
-    }
-
-    calculateForce(positiveIon, negativeIon, polarizability) {
-      let force = 0;
       let posForce = this.calculateIonForce(positiveIon, polarizability);
       let negForce = this.calculateIonForce(negativeIon, polarizability);
-      force += posForce;
-      force += negForce;
-      return force;
+
+      // Calculate resulting force vector
+      let resultingForce = p5.Vector.add(posForce, negForce);
+      this.updateGradient(resultingForce.mag());
+
+      // Add restoring force towards 0 angle direction
+      let restoringVector = p.createVector(1, 0).mult(this.restoringForce);
+      resultingForce.add(restoringVector);
+
+      // Calculate the target angle to point towards the resulting vector
+      let targetAngle = resultingForce.heading();
+
+      // Smoothly interpolate towards the target angle
+      this.currentAngle = lerpAngle(this.currentAngle, targetAngle, 0.2);
+
     }
 
     calculateIonForce(ion, polarizability) {
       let r = p5.Vector.dist(this.position, ion.position) * distanceScale;
       let forceMagnitude = polarizability * ion.charge / (r * r);
-      this.updateGradient(forceMagnitude);
-      let forceAngle = p.atan2(
-        ion.position.y - this.position.y, ion.position.x - this.position.x
-      );
-      return forceMagnitude * p.sin(forceAngle - this.currentAngle);
+      let forceVector = p5.Vector.sub(ion.position, this.position).normalize().mult(forceMagnitude);
+      return forceVector;
     }
 
     updateGradient(forceMagnitude) {
-      let intensity = tanhMap(p.abs(forceMagnitude), 2, 10, 0, 1);
-      let posColorGrad = p.lerpColor(
-        p.color(neutralColorRGB), p.color(positiveColorRGB), intensity
-      );
-      let negColorGrad = p.lerpColor(
-        p.color(neutralColorRGB), p.color(negativeColorRGB), intensity
-      );
+      let intensity = tanhMap(forceMagnitude, 2, 10, 0, 1);
+      let posColorGrad = p.lerpColor(p.color(neutralColorRGB), p.color(positiveColorRGB), intensity);
+      let negColorGrad = p.lerpColor(p.color(neutralColorRGB), p.color(negativeColorRGB), intensity);
       this.gradient = [posColorGrad, p.color(neutralColorRGB), negColorGrad];
     }
 
@@ -221,6 +214,14 @@ let dielectricSketch = (p) => {
 
       p.pop();
     }
+  }
+
+  // Linear interpolation for angles, considering periodicity
+  function lerpAngle(start, end, amt) {
+    let diff = end - start;
+    while (diff > Math.PI) diff -= 2 * Math.PI;
+    while (diff < -Math.PI) diff += 2 * Math.PI;
+    return start + amt * diff;
   }
 };
 
