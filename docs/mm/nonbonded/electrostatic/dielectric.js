@@ -10,6 +10,9 @@ let dielectricSketch = (p) => {
   let draggingIon = null;
   let shouldUpdate = false;
   const distanceScale = 1 / 100; // pixels to angstrom
+  const positiveColorRGB = [39, 125, 161];
+  const negativeColorRGB = [249, 65, 68];
+  const neutralColorRGB = [255, 255, 255];
 
   p.setup = () => {
     canvas = p.createCanvas(800, 600);
@@ -24,8 +27,8 @@ let dielectricSketch = (p) => {
     gridSpacingY = p.height / (gridRows + 1);
 
     // Create ions
-    positiveIon = new Ion(p.width / 3, p.height / 2, 15, p.color(39, 125, 161), 1);
-    negativeIon = new Ion(2 * p.width / 3, p.height / 2, 15, p.color(249, 65, 68), -1);
+    positiveIon = new Ion(p.width / 3, p.height / 2, 15, p.color(positiveColorRGB), 1);
+    negativeIon = new Ion(2 * p.width / 3, p.height / 2, 15, p.color(negativeColorRGB), -1);
 
     // Create solvent molecules on a grid
     for (let i = 1; i <= gridCols; i++) {
@@ -111,6 +114,12 @@ let dielectricSketch = (p) => {
     return false;
   }
 
+  function tanhMap(value, start1, stop1, start2, stop2) {
+    let normalized = p.map(value, start1, stop1, -3, 3);
+    let tanhValue = Math.tanh(normalized); // Apply tanh
+    return p.map(tanhValue, -1, 1, start2, stop2); // Map to desired range
+  }
+
   // Ion class
   class Ion {
     constructor(x, y, r, col, charge) {
@@ -134,17 +143,21 @@ let dielectricSketch = (p) => {
   class SolventMolecule {
     constructor(x, y) {
       this.position = p.createVector(x, y);
-      this.restAngle = p.random(p.TWO_PI);
+      this.restAngle = 0;
       this.currentAngle = this.restAngle;
-      this.gradient = [p.color(255, 255, 255), p.color(255, 255, 255)];
-      this.maxPolarization = 255; // Maximum opacity for strong polarization
       this.size = 20;
-      this.restoringForce = 0.01; // Small constant restoring force
+      this.restoringForce = 0.1; // Small constant restoring force
+      this.updateGradient();
     }
 
     update(positiveIon, negativeIon, polarizability) {
       let force = this.calculateForce(positiveIon, negativeIon, polarizability);
-      this.currentAngle = p.lerp(this.currentAngle, this.currentAngle + force + this.restoringForce, 0.1); // Apply constant restoring force
+      console.log(this.currentAngle);
+      console.log(force);
+      console.log("---");
+      this.currentAngle = p.lerp(
+        this.currentAngle, this.currentAngle + force + this.restoringForce, 0.1
+      );
     }
 
     calculateForce(positiveIon, negativeIon, polarizability) {
@@ -159,21 +172,39 @@ let dielectricSketch = (p) => {
     calculateIonForce(ion, polarizability) {
       let r = p5.Vector.dist(this.position, ion.position) * distanceScale;
       let forceMagnitude = polarizability * ion.charge / (r * r);
-      let forceAngle = p.atan2(ion.position.y - this.position.y, ion.position.x - this.position.x);
-      this.updateGradient(forceMagnitude, r);
+      this.updateGradient(forceMagnitude);
+      let forceAngle = p.atan2(
+        ion.position.y - this.position.y, ion.position.x - this.position.x
+      );
       return forceMagnitude * p.sin(forceAngle - this.currentAngle);
     }
 
-    updateGradient(forceMagnitude, distance) {
-      console.log(forceMagnitude);
-      let opacity = p.map(p.abs(forceMagnitude), 0, 10, 0, this.maxPolarization);
-      console.log(opacity);
-      console.log("----");
-      this.gradient = [
-        p.color(255, 0, 0, opacity),  // Red
-        p.color(255, 255, 255, opacity),  // White
-        p.color(0, 0, 255, opacity)   // Blue
-      ];
+    updateGradient(forceMagnitude) {
+      let intensity = tanhMap(p.abs(forceMagnitude), 2, 10, 0, 1);
+      let posColorGrad = p.lerpColor(
+        p.color(neutralColorRGB), p.color(positiveColorRGB), intensity
+      );
+      let negColorGrad = p.lerpColor(
+        p.color(neutralColorRGB), p.color(negativeColorRGB), intensity
+      );
+      this.gradient = [posColorGrad, p.color(neutralColorRGB), negColorGrad];
+    }
+
+    setGradient(colors, size) {
+      let numColors = colors.length;
+      let stepsPerColor = size / (numColors - 1);
+
+      for (let i = 0; i < numColors - 1; i++) {
+        let color1 = colors[i];
+        let color2 = colors[i + 1];
+
+        for (let j = 0; j < stepsPerColor; j++) {
+          let inter = p.map(j, 0, stepsPerColor, 0, 1);
+          let c = p.lerpColor(color1, color2, inter);
+          p.stroke(c);
+          p.line(-size / 2 + i * stepsPerColor + j, -size / 2, -size / 2 + i * stepsPerColor + j, size / 2);
+        }
+      }
     }
 
     display() {
@@ -183,16 +214,7 @@ let dielectricSketch = (p) => {
 
       // Draw solvent molecule with gradient
       p.noFill();
-      let halfSize = this.size / 2;
-      for (let i = -halfSize; i < halfSize; i++) {
-        let inter = p.map(i, -halfSize, halfSize, 0, 1);
-        let c = p.lerpColor(this.gradient[0], this.gradient[1], inter);
-        p.stroke(c);
-        p.line(-halfSize, i, halfSize, i);
-      }
-
-      // Draw black outline and white fill when no gradient
-      // p.fill(255);
+      this.setGradient(this.gradient, this.size);
       p.stroke(0);
       p.rectMode(p.CENTER);
       p.rect(0, 0, this.size, this.size);
