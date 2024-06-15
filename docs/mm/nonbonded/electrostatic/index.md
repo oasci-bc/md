@@ -22,14 +22,17 @@ TODO: Add paragraph about the dielectric constant, but mention that we will disc
 
 ## Visualization
 
-TODO: Introduce the visualization.
+TODO: Introduce the visualization and check computed forces and energies.
 
 <div id="charge-container"></div>
 <script src="./charge-field.js"></script>
 
-## Dielectric constants
+## Dielectric constant
 
 TODO: Add explanation and visualization of how the dielectric constant of the medium impacts electrostatic interactions.
+
+<div id="dielectric-container"></div>
+<script src="./dielectric.js"></script>
 
 ## Limitations
 
