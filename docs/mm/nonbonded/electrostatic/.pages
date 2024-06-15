@@ -1,6 +1,4 @@
 nav:
   - Electrostatic: index.md
-  - ESP: esp
-  - RESP: resp
-  - IPolQ: ipolq
-  - RESP2: resp2
+  - Pairwise: pairwise
+  - Polarizable: polarizable
